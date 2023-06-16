@@ -1,4 +1,5 @@
-<div class="alert alert-danger d-flex align-items-center" role="alert">
-<i class="fa-solid fa-triangle-exclamation p-2"></i><?php Arc\ArcSystem::getError(); ?>
-
+<div class="alert alert-danger" role="alert">
+    <h4><i class="bi bi-bug"> </i>Error <?php Arc\ArcSystem::getErrorCode(); ?></h4>
+    <hr>
+    <p><?php Arc\ArcSystem::getError(); ?></p>
 </div>

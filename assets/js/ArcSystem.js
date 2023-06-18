@@ -1,25 +1,30 @@
-
 /**
  * Send an Ajax request to the url.
- * 
- * @param {string} url The url to send the request to. 
- * @param {mixed} data The form or data to send. 
- * @param {function} responseCallback The function to call when the request is complete and will be pass the repsonse JSON. 
+ *
+ * @param {string} url The url to send the request to.
+ * @param {mixed} form The form data to send.
+ * @param {function} responseCallback The function to call when the request is complete and will be pass the repsonse JSON.
+ * @param {function} loader The function to call to show and hide the loader.
  */
-function AjaxRequest(url, data, responseCallback) {
-    fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-    .then(response => {
-        if (typeof responseCallback === "function") {
-            responseCallback(response.json());
+function AjaxRequest(url, form, responseCallback, loader) {
+  if (typeof loader === "function") {
+    // show loader if defined.
+    loader(true);
+  }
+
+  fetch(url, {
+    method: "POST",
+    body: new FormData(form),
+  })
+    .then((response) => response.text()) // Parse the response as text
+    .then((text) => {
+      const data = JSON.parse(text); // Try to parse the response as JSON
+      if (typeof responseCallback === "function") {
+        if (typeof loader === "function") {
+          // hide loader if defined.
+          loader(false);
         }
-    })
-    .catch(err => {
-        console.error(err);
+        responseCallback(data);
+      }
     });
 }

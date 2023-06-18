@@ -7,6 +7,8 @@ class IndexController {
 
     static function index() {
         Arc::setTitle('This is the index page.');
+
+        Arc::render();
     }
 
     static function error() {

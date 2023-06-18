@@ -13,6 +13,8 @@ class ArcSystem
         'errorCode' => '',
         'pathParts' => [],
         'redirect' => '',
+        'headers' => [],
+        'footers' => [],
     ];
 
     private static $errorMessages = [
@@ -106,12 +108,10 @@ class ArcSystem
             // no controller, error 404.
             self::setError('404');
         }
-
-        self::render();
     }
 
     // Render site skeleton.
-    private static function render()
+    static function render()
     {
         // Get the default site template.
         self::getView('shared/template');
@@ -160,14 +160,21 @@ class ArcSystem
         }
     }
 
-    static function getAsset($path, $fileSystem = false) {
+    static function getAsset($path, $fileSystem = false, $dontEcho = false) {
+        $rtn = '';
         switch ($fileSystem) {
             case false:
-                echo self::getHost() . 'assets/' . $path;
+                $rtn = self::getHost() . 'assets/' . $path;
                 break;
             case true:
-                echo self::getDocRoot() . 'assets/' . $path;
+                $rtn = self::getDocRoot() . 'assets/' . $path;
                 break;
+        }
+
+        if ($dontEcho == true) {
+            return $rtn;
+        } else {
+            echo $rtn;
         }
     }
 
@@ -175,17 +182,49 @@ class ArcSystem
         require_once(self::getDocRoot() . 'model/' . $name . 'Model.php');
     }
 
-    static function isAjaxRequest() {
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) 
-            && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) 
-            && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-                return true;
-        }
-        self::setError('404');
-    }
-
     static function setRedirect($location) {
         header('Location: ' . $location, false, 301);
         exit();
+    }
+
+    static function getHeaders() {
+        foreach (self::$systemData['headers'] as $item) {
+            echo $item;
+        }
+    }
+
+    static function getFooters() {
+        foreach (self::$systemData['footers'] as $item) {
+            echo $item;
+        }
+    }
+
+    static function setHeader($header) {
+        self::$systemData['headers'][] = $header;
+    }
+
+    static function setFooter($footer) {
+        self::$systemData['footers'][] = $footer;
+    }
+
+    static function isRequestFromOrigin() {
+        if (isset($_SERVER['HTTP_ORIGIN']) && ($_SERVER['HTTP_ORIGIN'] . '/' == self::getHost())) {
+            return true;
+        }
+        return false;
+    }
+
+    static function getDBConnection() {
+        if (USE_DB == true) {
+            $database = new \Medoo\Medoo([
+                'type' => DB_TYPE,
+                'host' => DB_HOST,
+                'database' => DB_NAME,
+                'username' => DB_USER,
+                'password' => DB_PASS,
+            ]);
+            return $database;
+        }
+        return null;
     }
 }

@@ -10,6 +10,7 @@
             integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css"
             integrity="sha256-BicZsQAhkGHIoR//IB2amPN5SrRb3fHB8tFsnqRAwnk=" crossorigin="anonymous">
+            <?php Arc\ArcSystem::getHeaders(); ?>
     </head>
 
 
@@ -20,7 +21,10 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>
-        <script src="<?php Arc\ArcSystem::getAsset('js/ArcSystem.js') ?>">
+        <script src="<?php Arc\ArcSystem::getAsset('js/loader.js'); ?>">
         </script>
+        <script src="<?php Arc\ArcSystem::getAsset('js/ArcSystem.js'); ?>">
+        </script>
+        <?php Arc\ArcSystem::getFooters(); ?>
     </body>
 </html>

@@ -10,5 +10,6 @@
     <div class="alert alert-danger d-none" id="alert" role="alert">
         
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="button" class="btn btn-primary" onclick="login()" name="btnLogin">Login</button> or 
+    <button type="button" class="btn btn-primary" onclick="window.location='register'">Register</button>
 </form>

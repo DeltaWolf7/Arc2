@@ -15,6 +15,7 @@ class ArcSystem
         'redirect' => '',
         'headers' => [],
         'footers' => [],
+        'data' => [],
     ];
 
     private static $errorMessages = [
@@ -75,6 +76,9 @@ class ArcSystem
     static function route() {
         self::$systemData['pathParts'] = self::getPathArray();
 
+        // start session
+        session_start();
+
          // Not the default route.
          if (self::getPath() !== '') {
             // Get view
@@ -103,10 +107,12 @@ class ArcSystem
                 $controllerClass::$method();
             } else {
                 self::setError('404');
+                self::render();
             }
         } else {
             // no controller, error 404.
             self::setError('404');
+            self::render();
         }
     }
 
@@ -133,7 +139,8 @@ class ArcSystem
     static function getError() {
         if (ENABLE_DEBUG == true) {
             self::$systemData['error'] .= '<p><pre>' . var_export(self::$systemData, true) . '</pre></p>'
-                . '<p><pre>' . var_export(get_defined_constants(true)['user'], true) . '</pre></p>';
+                . '<p><pre>' . var_export(get_defined_constants(true)['user'], true) . '</pre></p>'
+                . '<p><pre>' . var_export($_SESSION, true) . '</pre></p>';
         }
         echo self::$systemData['error'];
     }
@@ -183,7 +190,7 @@ class ArcSystem
     }
 
     static function setRedirect($location) {
-        header('Location: ' . $location, false, 301);
+        header('Location: ' . self::getHost() . $location, false, 301);
         exit();
     }
 
@@ -226,5 +233,13 @@ class ArcSystem
             return $database;
         }
         return null;
+    }
+
+    static function getData($name) {
+        self::$systemData['data'][$name];
+    }
+
+    static function setData($name, $data) {
+        self::$systemData['data'][$name] = $data;
     }
 }

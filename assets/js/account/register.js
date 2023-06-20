@@ -1,6 +1,4 @@
-registerForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
+function register() {
     var firstname = document.getElementById("firstname");
     var lastname = document.getElementById("lastname");
     var email = document.getElementById("email");
@@ -38,17 +36,36 @@ registerForm.addEventListener("submit", (e) => {
     }
 
     AjaxRequest('doregister', registerForm, registerCallback, arcloader)
-});
+}
 
 function registerCallback(data) {
     if (data.error != null) {
         showAlert(data.error);
     }
-    console.log(data);
+    //console.log(data);
+    showAlert(data.message, true);
 }
 
-function showAlert(message) {
+function showAlert(message, success = false) {
     var alert = document.getElementById("alert");
     alert.classList.remove("d-none");
+    if (success == true) {
+        alert.classList.add("alert-success");
+        alert.classList.remove("alert-danger");
+    } else {
+        alert.classList.add("alert-danger");
+        alert.classList.remove("alert-success");
+    }
     alert.innerHTML = message;
 }
+
+// Enter key for login
+window.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.code == "Enter") {
+        register();
+      }
+    },
+    true
+);

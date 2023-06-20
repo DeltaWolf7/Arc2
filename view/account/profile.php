@@ -1,7 +1,12 @@
-<form id="registerForm" method="post">
+<?php
+    $user = \Arc\ArcSystem::getData('user');
+    print_r($user);
+?>
+
+<form id="profileForm" method="post">
     <div class="mb-3">
         <label for="firstname" class="form-label">Firstname</label>
-        <input type="text" class="form-control" id="firstname" name="firstname">
+        <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo $user['Firstname']; ?>">
     </div>
     <div class="mb-3">
         <label for="lastname" class="form-label">Lastname</label>
@@ -21,6 +26,5 @@
     </div>
     <div class="alert d-none" id="alert" role="alert">
     </div>
-    <button type="button" class="btn btn-primary" onclick="register()">Register</button> or 
-    <button type="button" class="btn btn-primary" onclick="window.location='login'">Login</button>
+    <button type="button" class="btn btn-primary" onclick="updateProfile()">Update</button>
 </form>

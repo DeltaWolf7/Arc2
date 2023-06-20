@@ -6,7 +6,7 @@ define('USE_SECURITY', true); // Requires DB to be enabled.
 
 // Debug - errors output system infomration
 // WARNING!!! Do not enable this setting on production servers, this will cause security issues.
-define('ENABLE_DEBUG', true);
+define('ENABLE_DEBUG', false);
 
 // Database Settings - Only required for advanced features.
 // Database type (MySQL, MariaDB, MSSQL, Sybase, PostgreSQL, Oracle, Sqlite)

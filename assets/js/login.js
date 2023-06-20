@@ -21,6 +21,7 @@ function loginCallback(data) {
     if (data.error != null) {
         showAlert(data.error);
     }
+    console.log(data);
 }
 
 function showAlert(message) {

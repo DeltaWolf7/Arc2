@@ -12,19 +12,25 @@ function AjaxRequest(url, form, responseCallback, loader) {
     loader(true);
   }
 
+  var text = "";
+
   fetch(url, {
     method: "POST",
     body: new FormData(form),
   })
-    .then((response) => response.text()) // Parse the response as text
+    .then((response) => text = response.text()) // Parse the response as text
     .then((text) => {
-      const data = JSON.parse(text); // Try to parse the response as JSON
-      if (typeof responseCallback === "function") {
-        if (typeof loader === "function") {
-          // hide loader if defined.
-          loader(false);
+      try {
+        const data = JSON.parse(text); // Try to parse the response as JSON
+        if (typeof responseCallback === "function") {
+          responseCallback(data);
         }
-        responseCallback(data);
+      } catch (e) {
+        console.warn(text);
+      }
+      if (typeof loader === "function") {
+        // hide loader if defined.
+        loader(false);
       }
     });
 }
